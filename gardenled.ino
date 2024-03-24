@@ -92,22 +92,16 @@ unsigned long ledTime = 0;
     getLocalTime(&timeinfo);
     
     if (sunChecked != (timeinfo.tm_mon+1) * (timeinfo.tm_mday+1) && timeinfo.tm_hour > 3) {
-          if (timeinfo.tm_yday < 84 || timeinfo.tm_yday > 305) {
+          if (timeinfo.tm_yday < 84 || timeinfo.tm_yday > 304) {
             configTime(3600, 0, ntpServer);
           }
-          if (timeinfo.tm_yday > 93 && timeinfo.tm_yday < 298) {
+          if (timeinfo.tm_yday > 90 && timeinfo.tm_yday < 298) {
             configTime(3600, 3600, ntpServer);
           }
-          if (timeinfo.tm_yday >= 84 && timeinfo.tm_yday <= 93 && timeinfo.tm_wday - 6 < 84 ) {
-            configTime(3600, 0, ntpServer);
-          }
-          if (timeinfo.tm_yday >= 84 && timeinfo.tm_yday <= 93 && timeinfo.tm_wday - 6 >= 84) {
+          if (timeinfo.tm_yday >= 84 && timeinfo.tm_yday <= 90 && timeinfo.tm_wday == 6 && timeinfo.tm_isdst == 0 ) {
             configTime(3600, 3600, ntpServer);
           }
-          if (timeinfo.tm_yday >= 298 && timeinfo.tm_yday <= 305 && timeinfo.tm_wday - 6 < 298 ) {
-            configTime(3600, 3600, ntpServer);
-          }
-          if (timeinfo.tm_yday >= 298 && timeinfo.tm_yday <= 305 && timeinfo.tm_wday - 6 >= 289) {
+          if (timeinfo.tm_yday >= 298 && timeinfo.tm_yday <= 304 && timeinfo.tm_wday == 6 && timeinfo.tm_isdst == 1 ) {
             configTime(3600, 0, ntpServer);
           }
           GNMrise = GNM.sunrise(timeinfo.tm_year+1900, timeinfo.tm_mon+1, timeinfo.tm_mday, timeinfo.tm_isdst);
