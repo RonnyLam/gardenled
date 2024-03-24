@@ -12,8 +12,7 @@
 
   // set NTP variables
   const char* ntpServer = "europe.pool.ntp.org";
-  const long  gmtOffset_sec = 3600;
-  const int   daylightOffset_sec = 3600;
+
 
   // init time variables
   int minsToday;
@@ -64,9 +63,7 @@ unsigned long ledTime = 0;
 
     
     //init and get the time
-    setenv("TZ", "CET-1CEST,M3.5.0/2,M10.5.0/3", 1);
-    tzset();
-    configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+    configTime(3600, 0, ntpServer);
 
     server.on("/xxx", handle_OnConnect);
     server.on("/xxx/ledfull", handle_ledFull);
@@ -95,14 +92,31 @@ unsigned long ledTime = 0;
     getLocalTime(&timeinfo);
     
     if (sunChecked != (timeinfo.tm_mon+1) * (timeinfo.tm_mday+1) && timeinfo.tm_hour > 3) {
-          configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+          if (timeinfo.tm_yday < 84 || timeinfo.tm_yday > 305) {
+            configTime(3600, 0, ntpServer);
+          }
+          if (timeinfo.tm_yday > 93 && timeinfo.tm_yday < 298) {
+            configTime(3600, 3600, ntpServer);
+          }
+          if (timeinfo.tm_yday >= 84 && timeinfo.tm_yday <= 93 && timeinfo.tm_wday - 6 < 84 ) {
+            configTime(3600, 0, ntpServer);
+          }
+          if (timeinfo.tm_yday >= 84 && timeinfo.tm_yday <= 93 && timeinfo.tm_wday - 6 >= 84) {
+            configTime(3600, 3600, ntpServer);
+          }
+          if (timeinfo.tm_yday >= 298 && timeinfo.tm_yday <= 305 && timeinfo.tm_wday - 6 < 298 ) {
+            configTime(3600, 3600, ntpServer);
+          }
+          if (timeinfo.tm_yday >= 298 && timeinfo.tm_yday <= 305 && timeinfo.tm_wday - 6 >= 289) {
+            configTime(3600, 0, ntpServer);
+          }
           GNMrise = GNM.sunrise(timeinfo.tm_year+1900, timeinfo.tm_mon+1, timeinfo.tm_mday, timeinfo.tm_isdst);
           GNMset = GNM.sunset(timeinfo.tm_year+1900, timeinfo.tm_mon+1, timeinfo.tm_mday, timeinfo.tm_isdst);
           sunChecked = (timeinfo.tm_mon+1) * (timeinfo.tm_mday+1);
     }
-    
-    minsToday = timeinfo.tm_hour * 60 + timeinfo.tm_min;
 
+    minsToday = timeinfo.tm_hour * 60 + timeinfo.tm_min;
+    
     if (ledState == HIGH) {
       if (millis() - ledTime < 15*60000) {
         ledcWrite(ledChannel, pwmFull);
