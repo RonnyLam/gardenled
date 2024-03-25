@@ -98,11 +98,35 @@ unsigned long ledTime = 0;
           if (timeinfo.tm_yday > 90 && timeinfo.tm_yday < 298) {
             configTime(3600, 3600, ntpServer);
           }
-          if (timeinfo.tm_yday >= 84 && timeinfo.tm_yday <= 90 && timeinfo.tm_wday == 6 && timeinfo.tm_isdst == 0 ) {
-            configTime(3600, 3600, ntpServer);
+          if (timeinfo.tm_yday >= 84 && timeinfo.tm_yday <= 90) {
+            if (timeinfo.tm_yday == 84 && timeinfo.tm_wday - (timeinfo.tm_yday - 84) == -1){
+              configTime(3600, 3600, ntpServer);}
+            else if (timeinfo.tm_yday == 85 && timeinfo.tm_wday - (timeinfo.tm_yday - 85) == -1){
+              configTime(3600, 3600, ntpServer);}
+            else if (timeinfo.tm_yday == 86 && timeinfo.tm_wday - (timeinfo.tm_yday - 86) == -1){
+              configTime(3600, 3600, ntpServer);}
+            else if (timeinfo.tm_yday == 87 && timeinfo.tm_wday - (timeinfo.tm_yday - 87) == -1){
+              configTime(3600, 3600, ntpServer);}
+            else if (timeinfo.tm_yday == 88 && timeinfo.tm_wday - (timeinfo.tm_yday - 88) == -1){
+              configTime(3600, 3600, ntpServer);}
+            else if (timeinfo.tm_yday == 89 && timeinfo.tm_wday - (timeinfo.tm_yday - 89) == -1){
+              configTime(3600, 3600, ntpServer);}
+            else {configTime(3600, 3600, ntpServer);}
           }
-          if (timeinfo.tm_yday >= 298 && timeinfo.tm_yday <= 304 && timeinfo.tm_wday == 6 && timeinfo.tm_isdst == 1 ) {
-            configTime(3600, 0, ntpServer);
+          if (timeinfo.tm_yday >= 298 && timeinfo.tm_yday <= 304) {
+            if (timeinfo.tm_yday == 298 && timeinfo.tm_wday - (timeinfo.tm_yday - 298) == -1){
+              configTime(3600, 0, ntpServer);}
+            else if (timeinfo.tm_yday == 299 && timeinfo.tm_wday - (timeinfo.tm_yday - 299) == -1){
+              configTime(3600, 0, ntpServer);}
+            else if (timeinfo.tm_yday == 300 && timeinfo.tm_wday - (timeinfo.tm_yday - 300) == -1){
+              configTime(3600, 0, ntpServer);}
+            else if (timeinfo.tm_yday == 301 && timeinfo.tm_wday - (timeinfo.tm_yday - 301) == -1){
+              configTime(3600, 0, ntpServer);}
+            else if (timeinfo.tm_yday == 302 && timeinfo.tm_wday - (timeinfo.tm_yday - 302) == -1){
+              configTime(3600, 0, ntpServer);}
+            else if (timeinfo.tm_yday == 303 && timeinfo.tm_wday - (timeinfo.tm_yday - 303) == -1){
+              configTime(3600, 0, ntpServer);}
+            else {configTime(3600, 0, ntpServer);}
           }
           GNMrise = GNM.sunrise(timeinfo.tm_year+1900, timeinfo.tm_mon+1, timeinfo.tm_mday, timeinfo.tm_isdst);
           GNMset = GNM.sunset(timeinfo.tm_year+1900, timeinfo.tm_mon+1, timeinfo.tm_mday, timeinfo.tm_isdst);
