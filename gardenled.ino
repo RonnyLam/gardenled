@@ -20,7 +20,7 @@
   int sunChecked;
   int GNMrise;
   int GNMset;
-  int DST = 1;
+  bool DST = 1;
   const int pwmFull = 127;
   const int pwmHigh = 32;
   const int pwmLow = 1;
