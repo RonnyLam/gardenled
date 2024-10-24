@@ -47,10 +47,7 @@ unsigned long ledTime = 0;
 //    Serial.begin(115200);
     
     // configure LED PWM functionalitites
-    ledcSetup(ledChannel, freq, resolution);
-  
-    // attach the channel to the GPIO to be controlled
-    ledcAttachPin(ledPin, ledChannel);
+    ledcAttach(ledPin, freq, resolution);
     
     //connect to WiFi
 //    Serial.printf("Connecting to %s ", ssid);
@@ -127,25 +124,25 @@ unsigned long ledTime = 0;
     
     if (ledState == HIGH) {
       if (millis() - ledTime < 15*60000) {
-        ledcWrite(ledChannel, pwmFull);
+        ledcWrite(ledPin, pwmFull);
       } else {
         ledState = LOW;
       }
     } else {
         if (minsToday < GNMrise) {
-          ledcWrite(ledChannel, pwmLow);
+          ledcWrite(ledPin, pwmLow);
         }
         if (minsToday >= GNMrise && minsToday < GNMset && GNMrise < morning) {
-          ledcWrite(ledChannel, 0);
+          ledcWrite(ledPin, 0);
         }
         if (minsToday >= morning && minsToday < GNMrise && GNMrise >= morning) {
-          ledcWrite(ledChannel, pwmHigh);
+          ledcWrite(ledPin, pwmHigh);
         }
         if (minsToday >= GNMrise && minsToday < GNMset && GNMrise >= morning) {
-          ledcWrite(ledChannel, 0);
+          ledcWrite(ledPin, 0);
         }
         if (minsToday >= GNMset) {
-          ledcWrite(ledChannel, pwmHigh);
+          ledcWrite(ledPin, pwmHigh);
         }       
     }
     
@@ -164,7 +161,7 @@ void handle_ledFull() {
 //    Serial.println("LEDs tijdelijk vol aan");
     ledState = HIGH;
     ledTime = millis();
-    ledcWrite(ledChannel, pwmFull);
+    ledcWrite(ledPin, pwmFull);
     server.send(200, "text/html", SendHTML(ledState)); 
 }
 
@@ -187,13 +184,13 @@ void handle_NotFound(){
 void blinkDemo(){
     for (int i=0; i < 10; i++) {
       delay(100);
-      ledcWrite(ledChannel, pwmHigh);
+      ledcWrite(ledPin, pwmHigh);
       delay(100);
-      ledcWrite(ledChannel, pwmFull);
+      ledcWrite(ledPin, pwmFull);
       delay(100);
-      ledcWrite(ledChannel, pwmHigh);
+      ledcWrite(ledPin, pwmHigh);
       delay(100);
-      ledcWrite(ledChannel, pwmLow);
+      ledcWrite(ledPin, pwmLow);
     }
 }
 
