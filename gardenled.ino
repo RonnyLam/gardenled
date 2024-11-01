@@ -67,6 +67,8 @@ unsigned long ledTime = 0;
     server.on("/xxx/ledfull", handle_ledFull);
     server.on("/xxx/lednormal", handle_ledNormal);
     server.on("/xxx/leddemo", handle_ledDemo);
+    server.on("/xxx/time", handle_time);
+    server.on("/xxx/bright", handle_bright);
     server.onNotFound(handle_NotFound);
   
     server.begin();
@@ -92,25 +94,23 @@ unsigned long ledTime = 0;
     if (sunChecked != (timeinfo.tm_mon+1) * (timeinfo.tm_mday+1) && timeinfo.tm_hour > 3) {
           if (timeinfo.tm_mon+1 > 3 && timeinfo.tm_mon+1 < 10) {DST = 1;}
           else if (timeinfo.tm_mon+1 == 3) {
-            if (timeinfo.tm_mday >= 25 && timeinfo.tm_wday == 6){DST = 1;}
-            else if (timeinfo.tm_mday == 25 && timeinfo.tm_wday - (timeinfo.tm_mday - 25) == -1){DST = 1;}
-            else if (timeinfo.tm_mday == 26 && timeinfo.tm_wday - (timeinfo.tm_mday - 26) == -1){DST = 1;}
-            else if (timeinfo.tm_mday == 27 && timeinfo.tm_wday - (timeinfo.tm_mday - 27) == -1){DST = 1;}
-            else if (timeinfo.tm_mday == 28 && timeinfo.tm_wday - (timeinfo.tm_mday - 28) == -1){DST = 1;}
-            else if (timeinfo.tm_mday == 29 && timeinfo.tm_wday - (timeinfo.tm_mday - 29) == -1){DST = 1;}
-            else if (timeinfo.tm_mday == 30 && timeinfo.tm_wday - (timeinfo.tm_mday - 30) == -1){DST = 1;}
-            else if (timeinfo.tm_mday == 31 && timeinfo.tm_wday - (timeinfo.tm_mday - 31) == -1){DST = 1;}
+                 if (timeinfo.tm_mday == 25 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
+            else if (timeinfo.tm_mday == 26 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
+            else if (timeinfo.tm_mday == 27 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
+            else if (timeinfo.tm_mday == 28 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
+            else if (timeinfo.tm_mday == 29 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
+            else if (timeinfo.tm_mday == 30 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
+            else if (timeinfo.tm_mday == 31 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
             else {DST = 0;}
           }
           else if (timeinfo.tm_mon+1 == 10) {
-            if (timeinfo.tm_mday >= 25 && timeinfo.tm_wday == 6){DST = 0;}
-            else if (timeinfo.tm_mday == 25 && timeinfo.tm_wday - (timeinfo.tm_mday - 25) == -1){DST = 0;}
-            else if (timeinfo.tm_mday == 26 && timeinfo.tm_wday - (timeinfo.tm_mday - 26) == -1){DST = 0;}
-            else if (timeinfo.tm_mday == 27 && timeinfo.tm_wday - (timeinfo.tm_mday - 27) == -1){DST = 0;}
-            else if (timeinfo.tm_mday == 28 && timeinfo.tm_wday - (timeinfo.tm_mday - 28) == -1){DST = 0;}
-            else if (timeinfo.tm_mday == 29 && timeinfo.tm_wday - (timeinfo.tm_mday - 29) == -1){DST = 0;}
-            else if (timeinfo.tm_mday == 30 && timeinfo.tm_wday - (timeinfo.tm_mday - 30) == -1){DST = 0;}
-            else if (timeinfo.tm_mday == 31 && timeinfo.tm_wday - (timeinfo.tm_mday - 31) == -1){DST = 0;}
+                 if (timeinfo.tm_mday == 25 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
+            else if (timeinfo.tm_mday == 26 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
+            else if (timeinfo.tm_mday == 27 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
+            else if (timeinfo.tm_mday == 28 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
+            else if (timeinfo.tm_mday == 29 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
+            else if (timeinfo.tm_mday == 30 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
+            else if (timeinfo.tm_mday == 31 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
             else {DST = 1;}
           }
           else {DST = 0;}
@@ -175,6 +175,19 @@ void handle_ledDemo() {
 //    Serial.println("LED Demo");
     server.send(200, "text/plain", "Running demo"); 
     blinkDemo();
+}
+
+void handle_time() {
+    String timeString = String(minsToday);
+    String riseString = String(GNMrise);
+    String setString = String(GNMset);
+    String allString = String(timeString + " " + riseString + " " + setString);
+    server.send(200, "text/plain", allString); 
+}
+
+void handle_bright() {
+    String brightString = String(ledcRead(ledPin));
+    server.send(200, "text/plain", brightString); 
 }
 
 void handle_NotFound(){
