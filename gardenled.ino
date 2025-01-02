@@ -94,23 +94,11 @@ unsigned long ledTime = 0;
     if (sunChecked != (timeinfo.tm_mon+1) * (timeinfo.tm_mday+1) && timeinfo.tm_hour > 3) {
           if (timeinfo.tm_mon+1 > 3 && timeinfo.tm_mon+1 < 10) {DST = 1;}
           else if (timeinfo.tm_mon+1 == 3) {
-                 if (timeinfo.tm_mday == 25 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
-            else if (timeinfo.tm_mday == 26 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
-            else if (timeinfo.tm_mday == 27 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
-            else if (timeinfo.tm_mday == 28 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
-            else if (timeinfo.tm_mday == 29 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
-            else if (timeinfo.tm_mday == 30 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
-            else if (timeinfo.tm_mday == 31 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
+                 if (timeinfo.tm_mday >= 25 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 1;}
             else {DST = 0;}
           }
           else if (timeinfo.tm_mon+1 == 10) {
-                 if (timeinfo.tm_mday == 25 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
-            else if (timeinfo.tm_mday == 26 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
-            else if (timeinfo.tm_mday == 27 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
-            else if (timeinfo.tm_mday == 28 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
-            else if (timeinfo.tm_mday == 29 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
-            else if (timeinfo.tm_mday == 30 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
-            else if (timeinfo.tm_mday == 31 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
+                 if (timeinfo.tm_mday >= 25 && timeinfo.tm_mday - (timeinfo.tm_wday + 25) >= 0){DST = 0;}
             else {DST = 1;}
           }
           else {DST = 0;}
